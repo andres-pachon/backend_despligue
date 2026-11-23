@@ -1,4 +1,4 @@
-from datetime import date, time
+
 
 from app.database.connection import db
 from app.models.medicamento import Medicamento

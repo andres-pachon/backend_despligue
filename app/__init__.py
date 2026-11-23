@@ -32,7 +32,7 @@ def create_app(config_class=Config):
     from app.routes.toma_routes import toma_bp
     from app.routes.tratamiento_routes import tratamiento_bp
 
-    from .models import (
+    from .models import (# noqa: F401
         medicamento,
         paciente_cuidador,
         registro_toma,

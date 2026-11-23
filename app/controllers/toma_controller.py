@@ -31,7 +31,7 @@ def marcar_toma_controller(toma_id):
             return jsonify({"error": mensaje_error}), 404
         return jsonify({"error": mensaje_error}), 400
     except Exception as e:
-        return jsonify({"error": "Error interno al actualizar la toma."}), 500
+        return jsonify({"Error interno al actualizar la toma.":str(e)}), 500
 
 
 def listar_tomas_paciente_controller(paciente_id):

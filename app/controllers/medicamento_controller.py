@@ -31,7 +31,7 @@ def crear_medicamento_controller():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        return jsonify({"error": "Error interno al registrar el medicamento."}), 500
+        return jsonify({"Error interno al registrar el medicamento.": str(e)}), 500
 
 
 def listar_medicamentos_controller():
