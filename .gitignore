@@ -14,3 +14,7 @@ __pycache__/
 # Base de datos local / logs
 *.log
 instance/
+
+
+#
+.coverage

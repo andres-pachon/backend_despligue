@@ -1,10 +1,13 @@
-from flask import request, jsonify
 from datetime import date, time
+
+from flask import jsonify, request
+
 from app.services.tratamiento_service import (
     crear_tratamiento,
+    eliminar_tratamiento,
     obtener_tratamientos_por_paciente,
-    eliminar_tratamiento
 )
+
 
 def crear_tratamiento_controller():
     """Maneja la creación de prescripción médica y autogeneración de tomas."""
@@ -19,9 +22,20 @@ def crear_tratamiento_controller():
     hora_inicial_str = data.get("hora_inicial")
 
     # Validación de campos obligatorios
-    campos_obligatorios = [paciente_id, medicamento_id, dosis, frecuencia_horas, fecha_inicio_str, fecha_fin_str, hora_inicial_str]
+    campos_obligatorios = [
+        paciente_id,
+        medicamento_id,
+        dosis,
+        frecuencia_horas,
+        fecha_inicio_str,
+        fecha_fin_str,
+        hora_inicial_str,
+    ]
     if any(c is None for c in campos_obligatorios):
-        return jsonify({"error": "Todos los campos del tratamiento son obligatorios."}), 400
+        return (
+            jsonify({"error": "Todos los campos del tratamiento son obligatorios."}),
+            400,
+        )
 
     try:
         fecha_inicio = date.fromisoformat(fecha_inicio_str)
@@ -36,14 +50,19 @@ def crear_tratamiento_controller():
             frecuencia_horas=frecuencia_horas,
             fecha_inicio=fecha_inicio,
             fecha_fin=fecha_fin,
-            hora_inicial=hora_inicial
+            hora_inicial=hora_inicial,
         )
 
-        return jsonify({
-            "mensaje": "Tratamiento creado exitosamente con sus tomas programadas.",
-            "tratamiento": nuevo_tratamiento.to_dict(),
-            "total_tomas_generadas": len(nuevo_tratamiento.tomas)
-        }), 201
+        return (
+            jsonify(
+                {
+                    "mensaje": "Tratamiento creado exitosamente con sus tomas programadas.",
+                    "tratamiento": nuevo_tratamiento.to_dict(),
+                    "total_tomas_generadas": len(nuevo_tratamiento.tomas),
+                }
+            ),
+            201,
+        )
 
     except (ValueError, TypeError) as e:
         return jsonify({"error": str(e)}), 400
@@ -61,9 +80,13 @@ def eliminar_tratamiento_controller(tratamiento_id):
     """Elimina un tratamiento específico y todas sus tomas vinculadas."""
     try:
         eliminar_tratamiento(tratamiento_id)
-        return jsonify({"mensaje": f"Tratamiento #{tratamiento_id} eliminado exitosamente."}), 200
+        return (
+            jsonify(
+                {"mensaje": f"Tratamiento #{tratamiento_id} eliminado exitosamente."}
+            ),
+            200,
+        )
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
     except Exception as e:
         return jsonify({"error": "Error interno al eliminar el tratamiento."}), 500
-

@@ -1,5 +1,10 @@
-from app.controllers.auth_controller import registrar_controller, iniciar_sesion_controller, asignar_paciente_controller
 from flask import Blueprint
+
+from app.controllers.auth_controller import (
+    asignar_paciente_controller,
+    iniciar_sesion_controller,
+    registrar_controller,
+)
 
 auth_bp = Blueprint("auth_bp", __name__, url_prefix="/api/auth")
 

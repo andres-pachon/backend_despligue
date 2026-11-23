@@ -1,11 +1,13 @@
-from datetime import date, time, datetime
-from base_test import BaseTestCase
-from app.models.usuario import Usuario
-from app.models.medicamento import Medicamento
-from app.models.tratamiento import Tratamiento
-from app.models.registro_toma import RegistroToma
+from datetime import date, datetime, time
+
 from app.database.connection import db
+from app.models.medicamento import Medicamento
+from app.models.registro_toma import RegistroToma
+from app.models.tratamiento import Tratamiento
+from app.models.usuario import Usuario
 from app.services.toma_service import marcar_toma
+from base_test import BaseTestCase
+
 
 class TestMarcarToma(BaseTestCase):
 
@@ -15,7 +17,12 @@ class TestMarcarToma(BaseTestCase):
         a 'tomada' y registre automáticamente la fecha_hora_toma actual.
         """
         # 1. Arrange: Crear toma en estado pendiente
-        paciente = Usuario(nombre="Luis", correo="luis@medicent.com", contrasena_hash="123", rol="paciente")
+        paciente = Usuario(
+            nombre="Luis",
+            correo="luis@medicent.com",
+            contrasena_hash="123",
+            rol="paciente",
+        )
         med = Medicamento(nombre="Paracetamol", forma_farmaceutica="Tableta")
         db.session.add_all([paciente, med])
         db.session.commit()
@@ -27,7 +34,7 @@ class TestMarcarToma(BaseTestCase):
             frecuencia_horas=8,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 2),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
         db.session.add(tratamiento)
         db.session.commit()
@@ -35,7 +42,7 @@ class TestMarcarToma(BaseTestCase):
         toma = RegistroToma(
             tratamiento_id=tratamiento.id,
             fecha_hora_programada=datetime(2026, 11, 1, 8, 0, 0),
-            estado="pendiente"
+            estado="pendiente",
         )
         db.session.add(toma)
         db.session.commit()

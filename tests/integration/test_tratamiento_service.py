@@ -1,14 +1,16 @@
 from datetime import date, time
-from base_test import BaseTestCase
-from app.models.usuario import Usuario
-from app.models.medicamento import Medicamento
+
 from app.database.connection import db
+from app.models.medicamento import Medicamento
+from app.models.usuario import Usuario
 from app.services.tratamiento_service import (
     crear_tratamiento,
-    obtener_tratamientos_por_paciente,
+    eliminar_tratamiento,
     obtener_tratamiento_por_id,
-    eliminar_tratamiento
+    obtener_tratamientos_por_paciente,
 )
+from base_test import BaseTestCase
+
 
 class TestTratamientoService(BaseTestCase):
 
@@ -19,12 +21,12 @@ class TestTratamientoService(BaseTestCase):
             nombre="Carlos Perez",
             correo="carlos@medicent.com",
             contrasena_hash="hash123",
-            rol="paciente"
+            rol="paciente",
         )
         self.medicamento = Medicamento(
             nombre="Ibuprofeno",
             descripcion="Antiinflamatorio",
-            forma_farmaceutica="Cápsula 400mg"
+            forma_farmaceutica="Cápsula 400mg",
         )
         db.session.add_all([self.paciente, self.medicamento])
         db.session.commit()
@@ -38,7 +40,7 @@ class TestTratamientoService(BaseTestCase):
             frecuencia_horas=8,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 2),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
 
         self.assertIsNotNone(tratamiento.id)
@@ -58,7 +60,7 @@ class TestTratamientoService(BaseTestCase):
                 frecuencia_horas=8,
                 fecha_inicio=date(2026, 11, 1),
                 fecha_fin=date(2026, 11, 2),
-                hora_inicial=time(8, 0, 0)
+                hora_inicial=time(8, 0, 0),
             )
         self.assertIn("paciente", str(ctx.exception).lower())
 
@@ -72,7 +74,7 @@ class TestTratamientoService(BaseTestCase):
                 frecuencia_horas=8,
                 fecha_inicio=date(2026, 11, 1),
                 fecha_fin=date(2026, 11, 2),
-                hora_inicial=time(8, 0, 0)
+                hora_inicial=time(8, 0, 0),
             )
         self.assertIn("medicamento", str(ctx.exception).lower())
 
@@ -87,7 +89,7 @@ class TestTratamientoService(BaseTestCase):
                 frecuencia_horas=8,
                 fecha_inicio=date(2026, 11, 5),
                 fecha_fin=date(2026, 11, 1),
-                hora_inicial=time(8, 0, 0)
+                hora_inicial=time(8, 0, 0),
             )
 
         # Frecuencia en horas inválida (cero o negativa)
@@ -99,7 +101,7 @@ class TestTratamientoService(BaseTestCase):
                 frecuencia_horas=0,
                 fecha_inicio=date(2026, 11, 1),
                 fecha_fin=date(2026, 11, 2),
-                hora_inicial=time(8, 0, 0)
+                hora_inicial=time(8, 0, 0),
             )
 
     def test_obtener_tratamientos_por_paciente(self):
@@ -111,7 +113,7 @@ class TestTratamientoService(BaseTestCase):
             frecuencia_horas=12,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 2),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
 
         tratamientos = obtener_tratamientos_por_paciente(self.paciente.id)
@@ -131,7 +133,7 @@ class TestTratamientoService(BaseTestCase):
             frecuencia_horas=8,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 2),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
         t_id = tratamiento.id
         self.assertIsNotNone(obtener_tratamiento_por_id(t_id))

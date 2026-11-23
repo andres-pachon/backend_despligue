@@ -1,6 +1,12 @@
-from app.services.auth_service import registrar_usuario, iniciar_sesion, asignar_paciente
-from flask import request, jsonify
+from flask import jsonify, request
+
 from app.middlewares.auth_middleware import rol_requerido
+from app.services.auth_service import (
+    asignar_paciente,
+    iniciar_sesion,
+    registrar_usuario,
+)
+
 
 def registrar_controller():
     data = request.get_json() or {}
@@ -17,12 +23,23 @@ def registrar_controller():
     if not rol:
         return jsonify({"error": "El campo rol es obligatorio"}), 400
 
-    resultado = registrar_usuario(nombre, correo, contrasena ,rol)
+    resultado = registrar_usuario(nombre, correo, contrasena, rol)
     if resultado is None:
-        return jsonify({"error": "Este correo ya esta regstrado intenten con otro"}), 400
+        return (
+            jsonify({"error": "Este correo ya esta regstrado intenten con otro"}),
+            400,
+        )
 
-    return jsonify({"mensaje": "Usuario registrado exitosamente",
-                "usuario": resultado.to_dict()}), 201
+    return (
+        jsonify(
+            {
+                "mensaje": "Usuario registrado exitosamente",
+                "usuario": resultado.to_dict(),
+            }
+        ),
+        201,
+    )
+
 
 def iniciar_sesion_controller():
     data = request.get_json() or {}
@@ -31,11 +48,15 @@ def iniciar_sesion_controller():
     if not correo:
         return jsonify({"error": "El campo correo es obligatorio"}), 400
     if not contrasena:
-         return jsonify({"error": "El campo contraseña es obligatorio"}), 400
-    resultado = iniciar_sesion(correo,contrasena)
+        return jsonify({"error": "El campo contraseña es obligatorio"}), 400
+    resultado = iniciar_sesion(correo, contrasena)
     if resultado is None:
-        return jsonify({"error": "credenciales incorrectas ingrese bien sus datos"}),401
-    return jsonify(resultado),200
+        return (
+            jsonify({"error": "credenciales incorrectas ingrese bien sus datos"}),
+            401,
+        )
+    return jsonify(resultado), 200
+
 
 @rol_requerido("cuidador", "admin")
 def asignar_paciente_controller():
@@ -53,7 +74,12 @@ def asignar_paciente_controller():
     if resultado is None:
         return jsonify({"error": "Esta asignación ya existe"}), 400
 
-    return jsonify({
-        "mensaje": "Paciente asignado al cuidador exitosamente",
-        "asignacion": resultado.to_dict()
-    }), 201
+    return (
+        jsonify(
+            {
+                "mensaje": "Paciente asignado al cuidador exitosamente",
+                "asignacion": resultado.to_dict(),
+            }
+        ),
+        201,
+    )

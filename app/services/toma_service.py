@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta, timezone
+
 from app.database.connection import db
-from app.models.tratamiento import Tratamiento
 from app.models.registro_toma import RegistroToma
+from app.models.tratamiento import Tratamiento
+
 
 def calcular_horarios_tomas(fecha_inicio, fecha_fin, hora_inicial, frecuencia_horas):
     """
     Calcula la lista de fechas y horas exactas para las tomas de un tratamiento.
-    
+
     Para una duración en días (fecha_fin - fecha_inicio + 1 día), calcula el total
     de horas de cobertura y genera las tomas correspondientes con el intervalo regular.
     """
@@ -47,7 +49,7 @@ def generar_tomas_tratamiento(tratamiento_id):
         fecha_inicio=tratamiento.fecha_inicio,
         fecha_fin=tratamiento.fecha_fin,
         hora_inicial=tratamiento.hora_inicial,
-        frecuencia_horas=tratamiento.frecuencia_horas
+        frecuencia_horas=tratamiento.frecuencia_horas,
     )
 
     tomas_creadas = []
@@ -58,7 +60,7 @@ def generar_tomas_tratamiento(tratamiento_id):
             tratamiento_id=tratamiento.id,
             fecha_hora_programada=horario,
             fecha_hora_toma=None,
-            estado='pendiente'
+            estado="pendiente",
         )
         db.session.add(toma)
         tomas_creadas.append(toma)
@@ -68,14 +70,17 @@ def generar_tomas_tratamiento(tratamiento_id):
 
     return tomas_creadas
 
+
 def marcar_toma(toma_id, nuevo_estado, fecha_toma=None):
     """
     Actualiza el estado de una toma ('tomada', 'omitida', 'retrasada').
     Si no se proporciona fecha_toma, se asigna automáticamente la fecha y hora actual del sistema.
     """
-    estados_validos = {'pendiente', 'tomada', 'omitida', 'retrasada'}
+    estados_validos = {"pendiente", "tomada", "omitida", "retrasada"}
     if nuevo_estado not in estados_validos:
-        raise ValueError(f"Estado '{nuevo_estado}' no válido. Opciones: {estados_validos}")
+        raise ValueError(
+            f"Estado '{nuevo_estado}' no válido. Opciones: {estados_validos}"
+        )
 
     toma = db.session.get(RegistroToma, toma_id)
     if not toma:
@@ -85,7 +90,7 @@ def marcar_toma(toma_id, nuevo_estado, fecha_toma=None):
     toma.estado = nuevo_estado
 
     # 2. Registrar la fecha y hora de la toma
-    if nuevo_estado in ('tomada', 'retrasada'):
+    if nuevo_estado in ("tomada", "retrasada"):
         toma.fecha_hora_toma = fecha_toma if fecha_toma else datetime.now(timezone.utc)
 
     # 3. Guardar cambios en la base de datos
@@ -100,10 +105,8 @@ def obtener_tomas_por_paciente(paciente_id):
     ordenadas por fecha y hora programada.
     """
     return (
-        RegistroToma.query
-        .join(Tratamiento)
+        RegistroToma.query.join(Tratamiento)
         .filter(Tratamiento.paciente_id == paciente_id)
         .order_by(RegistroToma.fecha_hora_programada.asc())
         .all()
     )
-

@@ -1,7 +1,8 @@
 from flask import Blueprint
+
 from app.controllers.medicamento_controller import (
     crear_medicamento_controller,
-    listar_medicamentos_controller
+    listar_medicamentos_controller,
 )
 
 medicamento_bp = Blueprint("medicamento_bp", __name__, url_prefix="/api/medicamentos")

@@ -1,9 +1,11 @@
 from datetime import date, time
-from base_test import BaseTestCase
-from app.models.medicamento import Medicamento
-from app.models.usuario import Usuario
-from app.models.tratamiento import Tratamiento
+
 from app.database.connection import db
+from app.models.medicamento import Medicamento
+from app.models.tratamiento import Tratamiento
+from app.models.usuario import Usuario
+from base_test import BaseTestCase
+
 
 class TestModeloTratamiento(BaseTestCase):
 
@@ -14,12 +16,12 @@ class TestModeloTratamiento(BaseTestCase):
             nombre="Juan Perez",
             correo="juan@medicent.com",
             contrasena_hash="hash123",
-            rol="paciente"
+            rol="paciente",
         )
         med = Medicamento(
             nombre="Ibuprofeno",
             descripcion="Antiinflamatorio",
-            forma_farmaceutica="Cápsula"
+            forma_farmaceutica="Cápsula",
         )
         db.session.add_all([paciente, med])
         db.session.commit()
@@ -32,7 +34,7 @@ class TestModeloTratamiento(BaseTestCase):
             frecuencia_horas=8,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 7),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
         db.session.add(tratamiento)
         db.session.commit()

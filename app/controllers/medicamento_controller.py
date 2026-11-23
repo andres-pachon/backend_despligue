@@ -1,8 +1,7 @@
-from flask import request, jsonify
-from app.services.medicamento_service import (
-    crear_medicamento,
-    obtener_medicamentos
-)
+from flask import jsonify, request
+
+from app.services.medicamento_service import crear_medicamento, obtener_medicamentos
+
 
 def crear_medicamento_controller():
     """Maneja la creación de un nuevo medicamento desde la API."""
@@ -18,12 +17,17 @@ def crear_medicamento_controller():
         nuevo_medicamento = crear_medicamento(
             nombre=nombre,
             descripcion=descripcion,
-            forma_farmaceutica=forma_farmaceutica
+            forma_farmaceutica=forma_farmaceutica,
         )
-        return jsonify({
-            "mensaje": "Medicamento creado exitosamente.",
-            "medicamento": nuevo_medicamento.to_dict()
-        }), 201
+        return (
+            jsonify(
+                {
+                    "mensaje": "Medicamento creado exitosamente.",
+                    "medicamento": nuevo_medicamento.to_dict(),
+                }
+            ),
+            201,
+        )
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:

@@ -1,9 +1,10 @@
-from base_test import BaseTestCase
 from app.services.medicamento_service import (
     crear_medicamento,
+    obtener_medicamento_por_id,
     obtener_medicamentos,
-    obtener_medicamento_por_id
 )
+from base_test import BaseTestCase
+
 
 class TestMedicamentoService(BaseTestCase):
 
@@ -12,7 +13,7 @@ class TestMedicamentoService(BaseTestCase):
         med = crear_medicamento(
             nombre="Ibuprofeno",
             descripcion="Antiinflamatorio no esteroideo",
-            forma_farmaceutica="Cápsula 400mg"
+            forma_farmaceutica="Cápsula 400mg",
         )
         self.assertIsNotNone(med.id)
         self.assertEqual(med.nombre, "Ibuprofeno")
@@ -22,9 +23,7 @@ class TestMedicamentoService(BaseTestCase):
         """Debe rechazar la creación si el nombre está vacío o no se proporciona."""
         with self.assertRaises(ValueError) as context:
             crear_medicamento(
-                nombre="",
-                descripcion="Sin nombre",
-                forma_farmaceutica="Tableta"
+                nombre="", descripcion="Sin nombre", forma_farmaceutica="Tableta"
             )
         self.assertIn("nombre", str(context.exception).lower())
 
@@ -41,7 +40,9 @@ class TestMedicamentoService(BaseTestCase):
 
     def test_obtener_medicamento_por_id_existente_e_inexistente(self):
         """Debe retornar el medicamento si existe, o None si no existe."""
-        med_creado = crear_medicamento(nombre="Loratadina", forma_farmaceutica="Comprimido")
+        med_creado = crear_medicamento(
+            nombre="Loratadina", forma_farmaceutica="Comprimido"
+        )
 
         med_encontrado = obtener_medicamento_por_id(med_creado.id)
         self.assertIsNotNone(med_encontrado)

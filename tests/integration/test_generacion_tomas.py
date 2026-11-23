@@ -1,10 +1,12 @@
 from datetime import date, time
-from base_test import BaseTestCase
-from app.models.usuario import Usuario
+
+from app.database.connection import db
 from app.models.medicamento import Medicamento
 from app.models.tratamiento import Tratamiento
-from app.database.connection import db
+from app.models.usuario import Usuario
 from app.services.toma_service import generar_tomas_tratamiento
+from base_test import BaseTestCase
+
 
 class TestGeneracionTomas(BaseTestCase):
 
@@ -18,12 +20,12 @@ class TestGeneracionTomas(BaseTestCase):
             nombre="Carlos Ruiz",
             correo="carlos@medicent.com",
             contrasena_hash="hash123",
-            rol="paciente"
+            rol="paciente",
         )
         med = Medicamento(
             nombre="Amoxicilina",
             descripcion="Antibiótico",
-            forma_farmaceutica="Cápsula 500mg"
+            forma_farmaceutica="Cápsula 500mg",
         )
         db.session.add_all([paciente, med])
         db.session.commit()
@@ -35,7 +37,7 @@ class TestGeneracionTomas(BaseTestCase):
             frecuencia_horas=8,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 2),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
         db.session.add(tratamiento)
         db.session.commit()

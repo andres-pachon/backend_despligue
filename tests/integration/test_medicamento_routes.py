@@ -1,5 +1,6 @@
-from base_test import BaseTestCase
 from app.services.medicamento_service import crear_medicamento
+from base_test import BaseTestCase
+
 
 class TestMedicamentoRoutes(BaseTestCase):
 
@@ -8,7 +9,7 @@ class TestMedicamentoRoutes(BaseTestCase):
         payload = {
             "nombre": "Amoxicilina",
             "descripcion": "Antibiótico de amplio espectro",
-            "forma_farmaceutica": "Cápsula 500mg"
+            "forma_farmaceutica": "Cápsula 500mg",
         }
         response = self.client.post("/api/medicamentos", json=payload)
 
@@ -20,10 +21,7 @@ class TestMedicamentoRoutes(BaseTestCase):
 
     def test_crear_medicamento_sin_nombre_retorna_400(self):
         """POST /api/medicamentos sin nombre obligatorio debe retornar 400."""
-        payload = {
-            "descripcion": "Sin nombre",
-            "forma_farmaceutica": "Tableta"
-        }
+        payload = {"descripcion": "Sin nombre", "forma_farmaceutica": "Tableta"}
         response = self.client.post("/api/medicamentos", json=payload)
 
         self.assertEqual(response.status_code, 400)

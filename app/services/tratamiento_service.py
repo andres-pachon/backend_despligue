@@ -1,10 +1,19 @@
 from app.database.connection import db
-from app.models.usuario import Usuario
 from app.models.medicamento import Medicamento
 from app.models.tratamiento import Tratamiento
+from app.models.usuario import Usuario
 from app.services.toma_service import generar_tomas_tratamiento
 
-def crear_tratamiento(paciente_id, medicamento_id, dosis, frecuencia_horas, fecha_inicio, fecha_fin, hora_inicial):
+
+def crear_tratamiento(
+    paciente_id,
+    medicamento_id,
+    dosis,
+    frecuencia_horas,
+    fecha_inicio,
+    fecha_fin,
+    hora_inicial,
+):
     """
     Valida y crea un nuevo tratamiento médico.
     Genera automáticamente el calendario de tomas asociado en estado pendiente.
@@ -33,7 +42,7 @@ def crear_tratamiento(paciente_id, medicamento_id, dosis, frecuencia_horas, fech
         frecuencia_horas=frecuencia_horas,
         fecha_inicio=fecha_inicio,
         fecha_fin=fecha_fin,
-        hora_inicial=hora_inicial
+        hora_inicial=hora_inicial,
     )
 
     db.session.add(nuevo_tratamiento)
@@ -69,4 +78,3 @@ def eliminar_tratamiento(tratamiento_id):
     db.session.delete(tratamiento)
     db.session.commit()
     return True
-

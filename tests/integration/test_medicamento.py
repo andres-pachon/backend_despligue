@@ -1,6 +1,7 @@
-from base_test import BaseTestCase
-from app.models.medicamento import Medicamento
 from app.database.connection import db
+from app.models.medicamento import Medicamento
+from base_test import BaseTestCase
+
 
 class TestModeloMedicamento(BaseTestCase):
 
@@ -9,7 +10,7 @@ class TestModeloMedicamento(BaseTestCase):
         nuevo_medicamento = Medicamento(
             nombre="Paracetamol",
             descripcion="Analgésico y antipirético",
-            forma_farmaceutica="Comprimido 500mg"
+            forma_farmaceutica="Comprimido 500mg",
         )
         db.session.add(nuevo_medicamento)
         db.session.commit()

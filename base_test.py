@@ -1,7 +1,8 @@
-import unittest 
+import unittest
+
 from app import create_app
 from app.config.settings import TestConfig
-from app.database.connection import db 
+from app.database.connection import db
 
 
 class BaseTestCase(unittest.TestCase):
@@ -13,6 +14,7 @@ class BaseTestCase(unittest.TestCase):
         self.ctx.push()
         # 2. Crea las tablas en memoria
         db.create_all()
+
     def tearDown(self):
         # 3. Limpia la base de datos después de cada prueba
         db.session.remove()

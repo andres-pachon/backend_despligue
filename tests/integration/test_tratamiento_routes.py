@@ -1,8 +1,10 @@
 from datetime import date, time
-from base_test import BaseTestCase
-from app.models.usuario import Usuario
-from app.models.medicamento import Medicamento
+
 from app.database.connection import db
+from app.models.medicamento import Medicamento
+from app.models.usuario import Usuario
+from base_test import BaseTestCase
+
 
 class TestTratamientoRoutes(BaseTestCase):
 
@@ -12,11 +14,10 @@ class TestTratamientoRoutes(BaseTestCase):
             nombre="Laura Lopez",
             correo="laura@medicent.com",
             contrasena_hash="hash123",
-            rol="paciente"
+            rol="paciente",
         )
         self.medicamento = Medicamento(
-            nombre="Amoxicilina",
-            forma_farmaceutica="Cápsula 500mg"
+            nombre="Amoxicilina", forma_farmaceutica="Cápsula 500mg"
         )
         db.session.add_all([self.paciente, self.medicamento])
         db.session.commit()
@@ -30,7 +31,7 @@ class TestTratamientoRoutes(BaseTestCase):
             "frecuencia_horas": 8,
             "fecha_inicio": "2026-11-01",
             "fecha_fin": "2026-11-02",
-            "hora_inicial": "08:00:00"
+            "hora_inicial": "08:00:00",
         }
         response = self.client.post("/api/tratamientos", json=payload)
 
@@ -63,7 +64,7 @@ class TestTratamientoRoutes(BaseTestCase):
             "frecuencia_horas": 12,
             "fecha_inicio": "2026-11-01",
             "fecha_fin": "2026-11-03",
-            "hora_inicial": "09:00:00"
+            "hora_inicial": "09:00:00",
         }
         self.client.post("/api/tratamientos", json=payload)
 
@@ -85,7 +86,7 @@ class TestTratamientoRoutes(BaseTestCase):
             "frecuencia_horas": 8,
             "fecha_inicio": "2026-11-01",
             "fecha_fin": "2026-11-02",
-            "hora_inicial": "08:00:00"
+            "hora_inicial": "08:00:00",
         }
         res_post = self.client.post("/api/tratamientos", json=payload)
         t_id = res_post.get_json()["tratamiento"]["id"]

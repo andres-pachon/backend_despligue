@@ -1,6 +1,8 @@
-from datetime import date, time, datetime
-from base_test import BaseTestCase
+from datetime import date, datetime, time
+
 from app.services.toma_service import calcular_horarios_tomas
+from base_test import BaseTestCase
+
 
 class TestCalculoTomas(BaseTestCase):
 
@@ -16,7 +18,9 @@ class TestCalculoTomas(BaseTestCase):
         frecuencia_horas = 8
 
         # 2. Actuar (Act)
-        horarios = calcular_horarios_tomas(fecha_inicio, fecha_fin, hora_inicial, frecuencia_horas)
+        horarios = calcular_horarios_tomas(
+            fecha_inicio, fecha_fin, hora_inicial, frecuencia_horas
+        )
 
         # 3. Verificar (Assert)
         # 2 días (48 horas) / 8 horas = exactamente 6 tomas
@@ -26,5 +30,5 @@ class TestCalculoTomas(BaseTestCase):
         self.assertEqual(horarios[0], datetime(2026, 11, 1, 8, 0, 0))
         # Validamos que el intervalo entre cada toma sea exactamente de 8 horas
         for i in range(1, len(horarios)):
-            diferencia_horas = (horarios[i] - horarios[i-1]).total_seconds() / 3600
+            diferencia_horas = (horarios[i] - horarios[i - 1]).total_seconds() / 3600
             self.assertEqual(diferencia_horas, 8)

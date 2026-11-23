@@ -1,15 +1,22 @@
 from datetime import date, time
-from base_test import BaseTestCase
-from app.models.usuario import Usuario
-from app.models.medicamento import Medicamento
-from app.services.tratamiento_service import crear_tratamiento
+
 from app.database.connection import db
+from app.models.medicamento import Medicamento
+from app.models.usuario import Usuario
+from app.services.tratamiento_service import crear_tratamiento
+from base_test import BaseTestCase
+
 
 class TestTomaRoutes(BaseTestCase):
 
     def setUp(self):
         super().setUp()
-        self.paciente = Usuario(nombre="Mario", correo="mario@medicent.com", contrasena_hash="123", rol="paciente")
+        self.paciente = Usuario(
+            nombre="Mario",
+            correo="mario@medicent.com",
+            contrasena_hash="123",
+            rol="paciente",
+        )
         self.med = Medicamento(nombre="Ibuprofeno", forma_farmaceutica="Tableta")
         db.session.add_all([self.paciente, self.med])
         db.session.commit()
@@ -22,7 +29,7 @@ class TestTomaRoutes(BaseTestCase):
             frecuencia_horas=8,
             fecha_inicio=date(2026, 11, 1),
             fecha_fin=date(2026, 11, 2),
-            hora_inicial=time(8, 0, 0)
+            hora_inicial=time(8, 0, 0),
         )
         self.primera_toma = self.tratamiento.tomas[0]
 
