@@ -1,5 +1,3 @@
-
-
 from app.database.connection import db
 from app.models.medicamento import Medicamento
 from app.models.usuario import Usuario

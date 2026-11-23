@@ -67,7 +67,7 @@ def crear_tratamiento_controller():
     except (ValueError, TypeError) as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        return jsonify({"Error interno al procesar el tratamiento.":srt(e) }), 500
+        return jsonify({"Error interno al procesar el tratamiento.": str(e)}), 500
 
 
 def listar_tratamientos_paciente_controller(paciente_id):
@@ -89,4 +89,4 @@ def eliminar_tratamiento_controller(tratamiento_id):
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
     except Exception as e:
-        return jsonify({"Error interno al eliminar el tratamiento.":str(e) }), 500
+        return jsonify({"Error interno al eliminar el tratamiento.": str(e)}), 500
