@@ -17,4 +17,6 @@ instance/
 
 
 #
-.coverage
+.coverage.pytest_cache/
+coverage.xml
+*-results.xml
