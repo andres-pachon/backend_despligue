@@ -35,7 +35,7 @@ jobs:
     name: Linter
     runs-on: ubuntu-latest
     steps:
-      - name: Clonar el repositorio
+      - name: Clonar el repositorio del BackEnd
         uses: actions/checkout@v4
 
       - name: Instalar Python
